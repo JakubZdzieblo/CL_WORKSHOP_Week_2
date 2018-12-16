@@ -3,6 +3,7 @@ package pl.coderslab.dao;
 import pl.coderslab.entity.Exercise;
 import pl.coderslab.entity.Solution;
 import pl.coderslab.entity.User;
+import pl.coderslab.services.DBService;
 import pl.coderslab.services.DBServicePs;
 
 import java.sql.SQLException;
@@ -13,6 +14,32 @@ import java.util.Date;
 import java.util.List;
 
 public class SolutionDao {
+
+    public List<Solution> loadAllByUserId (int id) {
+        String query = "select * from solution where users_id = ?";
+        String[] param = { String.valueOf(id)};
+        return getSolutions(query, param);
+    }
+
+    public List<Solution> loadAllByExerciseId (int id) {
+        String query = "select * from solution where exercise_id = ? order by updated desc";
+        String[] param = { String.valueOf(id)};
+        return getSolutions(query, param);
+    }
+
+    private List<Solution> getSolutions(String query, String[] param) {
+        List<Solution> result = new ArrayList<>();
+        try {
+            List<String[]> data = DBServicePs.getData(query, param);
+            for (String[] row : data) {
+                result.add(createSingleSolutionObject(row));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
     public void save(Solution solution){
 

@@ -20,6 +20,22 @@ public class UserDao {
 
     }
 
+    public List<User> loadAllByGroupId(int id){
+        String query = "select * from users where user_group_id=?";
+        String[] param = { String.valueOf(id) };
+        List<User> result = new ArrayList<>();
+
+        try {
+            List<String[]> data = DBServicePs.getData(query, param);
+            for (String[] row : data) {
+                result.add(createSingleUserObject(row));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
     public User getById(int id){
         String query = "Select * from `users` Where `id` = ?;";
@@ -88,7 +104,7 @@ public class UserDao {
                 " Where `id` = ?;";
 
         String[] params = new String[5];
-        params[0] =user.getUsername();
+        params[0] = user.getUsername();
         params[1] = user.getEmail();
         //TODO - encode if changed
         params[2] = user.getPassword();
