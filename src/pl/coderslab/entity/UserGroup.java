@@ -5,12 +5,12 @@ public class UserGroup {
     private int id;
     private String name;
 
-    //construtor for new elements
+    //constructor for new elements
     public UserGroup(String name) {
         setName(name);
     }
 
-    //construtor for elements from db
+    //constructor for elements from db
     public UserGroup(int id, String name) {
         setId(id);
         setName(name);
@@ -34,6 +34,6 @@ public class UserGroup {
 
     @Override
     public String toString() {
-        return "User group id="+getId()+" name="+getName();
+        return "id="+getId()+" name="+getName();
     }
 }

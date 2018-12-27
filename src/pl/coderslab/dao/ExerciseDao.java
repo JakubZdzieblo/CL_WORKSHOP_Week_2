@@ -1,9 +1,7 @@
 package pl.coderslab.dao;
 
 import pl.coderslab.entity.Exercise;
-import pl.coderslab.services.DBService;
 import pl.coderslab.services.DBServicePs;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +38,28 @@ public class ExerciseDao {
             for (String[] row : result) {
                 loadedAll.add(createSingleExerciseObject(row));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return loadedAll;
+    }
+
+    public List<Exercise> loadExcluded(int userId) {
+        String query = "select distinct e.* from exercise e where not exists (\n" +
+                "    select * from exercise e2 join solution s on e2.id = s.exercise_id where e2.id=e.id and s.users_id =?\n" +
+                "    )";
+        List<Exercise> list = new ArrayList<>();
+        String[] param = {Integer.toString(userId)};
+        try {
+            List<String[]> result = DBServicePs.getData(query, param);
+            for (String[] row : result) {
+                list.add(createSingleExerciseObject(row));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+
     }
 
     public void delete(Exercise exercise) {

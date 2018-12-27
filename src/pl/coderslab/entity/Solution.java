@@ -14,6 +14,11 @@ public class Solution {
     public Solution() {
     }
 
+    @Override
+    public String toString() {
+        return "ID: " + id + " Ex.: " + exercise + ", by " + user.getUsername() + ", '" + description + "'";
+    }
+
     public int getId() {
         return id;
     }

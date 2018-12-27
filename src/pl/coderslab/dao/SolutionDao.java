@@ -3,7 +3,6 @@ package pl.coderslab.dao;
 import pl.coderslab.entity.Exercise;
 import pl.coderslab.entity.Solution;
 import pl.coderslab.entity.User;
-import pl.coderslab.services.DBService;
 import pl.coderslab.services.DBServicePs;
 
 import java.sql.SQLException;
@@ -38,6 +37,18 @@ public class SolutionDao {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public void delete(int id){
+        String query = "Delete from `solution` where `id` = ?;";
+        String[] params = new String[1];
+        params[0] = String.valueOf(id);
+
+        try {
+            DBServicePs.executeQuery(query, params);
+            } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -83,7 +94,13 @@ public class SolutionDao {
         String[] params = new String[5];
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         params[0] = sdf.format(solution.getCreated());
-        params[1] = sdf.format(solution.getUpdated());
+
+        if (solution.getUpdated() == null) {
+            params[1] = null;
+        } else {
+            params[1] = sdf.format(solution.getUpdated());
+        }
+
         params[2] = solution.getDescription();
         params[3] = String.valueOf(solution.getExercise().getId());
         params[4] = String.valueOf(solution.getUser().getId());
@@ -104,7 +121,7 @@ public class SolutionDao {
                 "`updated` = ?," +
                 "`description` = ?," +
                 "`exercise_id` = ?," +
-                "`users_id` = ?," +
+                "`users_id` = ?" +
                 " Where `id` = ?;";
 
         String[] params = new String[6];
@@ -145,8 +162,8 @@ public class SolutionDao {
         Date elCreated = null;
         Date elUpdated = null;
         try {
-            elCreated = sdf.parse(el[1]);
-            elUpdated = sdf.parse(el[2]);
+            if (el[1] != null) {elCreated = sdf.parse(el[1]);}
+            if (el[2] != null) {elUpdated = sdf.parse(el[2]);}
         } catch (ParseException e) {
             e.printStackTrace();
         }
