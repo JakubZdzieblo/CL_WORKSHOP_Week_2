@@ -109,8 +109,6 @@ public class DBService {
         }catch (SQLException e){
             throw e;
         }
-
-
     }
 
     private static void setParams(String[] params, PreparedStatement st) throws SQLException {

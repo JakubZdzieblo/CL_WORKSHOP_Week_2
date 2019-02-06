@@ -1,6 +1,5 @@
 package pl.coderslab.fixtures;
 
-import pl.coderslab.services.DBService;
 import pl.coderslab.services.DBServicePs;
 
 import java.sql.SQLException;
@@ -23,7 +22,7 @@ public class InitApp {
             "Foreign key(`user_group_id`) References `user_group`(`id`)" +
             ");";
 
-    public String queryExerciseTable = "create table exercise (\n" +
+    private String queryExerciseTable = "create table exercise (\n" +
             "  id int(11) auto_increment,\n" +
             "  title varchar(255),\n" +
             "  description text,\n" +
